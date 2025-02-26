@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat pics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        img {
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+        img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <h1>Cat pics</h1>
+    <p>click the cat to get a new one! :3</p>
+    <p>follow me on github: <a href="https://github.com/shl225">shl225</a></p>
+    <img id="catImage" src="https://placecats.com/400/300" alt="A random cat" onclick="changeCat()">
+
+    <script>
+        let lastImages = [];
+        const baseWidth = 400;
+        const baseHeight = 300;
+        const variation = 20;
+
+        function getRandomSize() {
+            let width, height;
+            do {
+                width = baseWidth + (Math.floor(Math.random() * (variation * 2 + 1)) - variation);
+                height = baseHeight + (Math.floor(Math.random() * (variation * 2 + 1)) - variation);
+            } while (lastImages.some(([w, h]) => w === width && h === height));
+
+            lastImages.push([width, height]);
+            if (lastImages.length > 10) {
+                lastImages.shift();
+            }
+
+            return { width, height };
+        }
+
+        function changeCat() {
+            const { width, height } = getRandomSize();
+            document.getElementById("catImage").src = `https://placecats.com/${width}/${height}`;
+        }
+    </script>
+</body>
+</html>
