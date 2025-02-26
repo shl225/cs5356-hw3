@@ -1,61 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cat pics</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            color: #333;
-        }
-        img {
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: transform 0.2s ease-in-out;
-        }
-        img:hover {
-            transform: scale(1.05);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <!-- rich preview meta tags -->
+  <meta name="description" content="click to see sean portfolio">
+  <meta property="og:title" content="sean portfolio">
+  <meta property="og:description" content="click to see sean portfolio">
+  <meta property="og:image" content="sean.png">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <!-- google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-29W9XWRHBP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-29W9XWRHBP');
+  </script>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sean portfolio</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    header, footer {
+      background-color: #B31B1B; /* cornellian red */
+      color: white;
+      padding: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      position: sticky;
+      z-index: 1000;
+    }
+    header { top: 0; }
+    footer { bottom: 0; }
+    .container {
+      max-width: 600px;
+      width: 100%;
+      padding: 20px;
+      flex: 1;
+    }
+    img {
+      max-width: 250px;
+      border-radius: 10px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+      margin: 20px;
+      transition: filter 0.5s;
+    }
+    img:hover { filter: grayscale(100%); }
+    input[type="number"] {
+      padding: 10px;
+      font-size: 1.2em;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      margin-right: 10px;
+      outline: none;
+      width: 100px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 10px;
+      background-color: #B31B1B;
+      color: white;
+      cursor: pointer;
+    }
+    #obituary { display: none; text-transform: lowercase; }
+    a {
+      color: #B31B1B;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <h1>Cat pics</h1>
-    <p>click the cat to get a new one! :3</p>
-    <p>follow me on github: <a href="https://github.com/shl225">shl225</a></p>
-    <img id="catImage" src="https://placecats.com/400/300" alt="A random cat" onclick="changeCat()">
+  <header>
+    <h1 id="header-title">sean portfolio</h1>
+  </header>
 
-    <script>
-        let lastImages = [];
-        const baseWidth = 400;
-        const baseHeight = 300;
-        const variation = 20;
+  <img id="seanImage" src="sean.png" alt="sean" />
 
-        function getRandomSize() {
-            let width, height;
-            do {
-                width = baseWidth + (Math.floor(Math.random() * (variation * 2 + 1)) - variation);
-                height = baseHeight + (Math.floor(Math.random() * (variation * 2 + 1)) - variation);
-            } while (lastImages.some(([w, h]) => w === width && h === height));
+  <div class="container">
+    <section id="content">
+      <p>
+        follow sean on github:
+        <a href="https://github.com/shl225">shl225</a>
+      </p>
+      <p>sean is a current graduate student at cornell tech.</p>
+      <p>he is doing a master's of information science.</p>
+      <p>he can speak english and spanish fluently.</p>
+      <p>his ip address is 192.168.0.1 (please don't dox him!)</p>
+      
+      <h2>jsonplaceholder todo</h2>
+      <p>
+        <a href="https://jsonplaceholder.typicode.com/" target="_blank">
+          https://jsonplaceholder.typicode.com/
+        </a>
+      </p>
+      <p>enter a todo id to fetch a task:</p>
+      <input type="number" id="todoId" placeholder="e.g., 1" />
+      <button onclick="fetchTodo()">fetch todo</button>
+      <div id="todoDisplay"></div>
+      
+      <details>
+        <summary>fun fact about this website</summary>
+        <p>
+          this site uses the <code>&lt;details&gt;</code> element, toggling hidden content without javascript.
+        </p>
+        <p>try hovering or clicking on the image of sean!</p>
+      </details>
+    </section>
+    
+    <section id="obituary">
+      <h1>sean obituary</h1>
+      <p>in a bizarre twist of fate, sean was mauled by rabbit of caerbannog.</p>
+      <p>attack was swift and utterly unexpected, leaving everyone in genuine disbelief.</p>
+      <p>flowers can be sent to his email address: shl225@cornell.edu.</p>
+    </section>
+  </div>
 
-            lastImages.push([width, height]);
-            if (lastImages.length > 10) {
-                lastImages.shift();
-            }
+  <footer>
+    <p>made with ❤️ by sean hardesty lewis</p>
+  </footer>
 
-            return { width, height };
-        }
+  <script>
+    // fetching todo item from jsonplaceholder
+    async function fetchTodo() {
+      const todoId = document.getElementById('todoId').value || 1;
+      try {
+        const res = await fetch(`https://jsonplaceholder.typicode.com/todos/${todoId}`);
+        const data = await res.json();
+        const display = document.getElementById('todoDisplay');
+        display.innerHTML = `
+          <h3>todo details:</h3>
+          <p><strong>id:</strong> ${data.id}</p>
+          <p><strong>title:</strong> ${data.title}</p>
+          <p><strong>completed:</strong> ${data.completed}</p>
+        `;
+      } catch (error) {
+        console.error('error fetching data:', error);
+        document.getElementById('todoDisplay').innerHTML = '<p>error fetching data.</p>';
+      }
+    }
 
-        function changeCat() {
-            const { width, height } = getRandomSize();
-            document.getElementById("catImage").src = `https://placecats.com/${width}/${height}`;
-        }
-    </script>
+    // setting up original text values
+    let overrideActive = false;
+    const origTitle = document.title;
+    const headerTitleElem = document.getElementById('header-title');
+    const origHeader = headerTitleElem.innerHTML;
+    const content = document.getElementById('content');
+    const origContent = content.innerHTML;
+    const footerElem = document.querySelector('footer');
+    const origFooter = footerElem.innerHTML;
+    const obituary = document.getElementById('obituary');
+
+    // toggling content and header/footer bg on image hover
+    const image = document.getElementById('seanImage');
+    const header = document.querySelector('header');
+
+    image.addEventListener('mouseenter', () => {
+      if (overrideActive) return;
+      document.title = 'sean obituary';
+      headerTitleElem.textContent = 'sean obituary';
+      content.style.display = 'none';
+      obituary.style.display = 'block';
+      header.style.backgroundColor = 'darkgrey';
+      footerElem.style.backgroundColor = 'darkgrey';
+    });
+
+    image.addEventListener('mouseleave', () => {
+      if (overrideActive) return;
+      document.title = 'sean portfolio';
+      headerTitleElem.textContent = 'sean portfolio';
+      content.style.display = 'block';
+      obituary.style.display = 'none';
+      header.style.backgroundColor = '#B31B1B';
+      footerElem.style.backgroundColor = '#B31B1B';
+    });
+
+    // on click, set image to rabbit.jpg and override text with killer rabbit message and RUN text
+    image.addEventListener('click', () => {
+      overrideActive = true;
+      image.src = "rabbit.jpg";
+      const overrideText = `
+        <div style="font-size:3em; font-weight:bold; color:black;">
+          ITS THE KILLER RABBIT OF CAERBANNOG!!!!<br>
+          RUNNNNNNNN!!!
+        </div>
+      `;
+      document.title = "ITS THE KILLER RABBIT OF CAERBANNOG!!!!";
+      headerTitleElem.innerHTML = overrideText;
+      content.innerHTML = overrideText;
+      footerElem.innerHTML = overrideText;
+      obituary.style.display = 'none';
+      
+      setTimeout(() => {
+        overrideActive = false;
+        document.title = origTitle;
+        headerTitleElem.innerHTML = origHeader;
+        content.innerHTML = origContent;
+        footerElem.innerHTML = origFooter;
+        header.style.backgroundColor = '#B31B1B';
+        footerElem.style.backgroundColor = '#B31B1B';
+        content.style.display = 'block';
+        obituary.style.display = 'none';
+        image.src = "sean.png";
+      }, 3000);
+    });
+  </script>
 </body>
 </html>
